@@ -25,7 +25,7 @@ server***
     # Run command below as root on new server 
     /opt/zimbra/libexec/zmfixperms -e -v
     ```
-1. As root rerun the installer without the -s option:
+1. As root rerun the installer ***without the -s option***:
     ```
     ./install.sh 
     ```
@@ -45,7 +45,8 @@ Check if moved Zimbra works as expected. Now you are ready to final move.
     ```
 1. On the **new server**
     ```
-    # Run command below as root on new server 
+    # Run commands below as root on new server
+    su - zimbra -c 'zmcontrol stop'
     rsync -e ssh -axvzKHS  old_server:/opt/zimbra /opt/
     /opt/zimbra/libexec/zmfixperms -e -v
     ```
@@ -63,6 +64,7 @@ Check if moved Zimbra works as expected. Now you are ready to final move.
     zmcontrol restart
     ```
 1. Check if moved Zimbra works as expected and set DNS records point to new server
+1. Power off ***old server***
 
 
  ## Possible problems
@@ -72,5 +74,9 @@ Check if moved Zimbra works as expected. Now you are ready to final move.
 
     2. _Error:_ **Linux.c**: loadable library and perl binaries are mismatched (got handshake key 0xdb00080, needed 0xde00080)
         Run `apt install --reinstall zimbra-perl-socket-linux` to solve.
-- Log file `/opt/zimbra/zmstat/zmstat.out` full of message like  `$line in pattern match (m//) at /opt/zimbra/libexec/zmstat-io line 87.`
-        `sed -i s/Device\:/Device/g /tmp/zmstat-io` may solve the problem
+- Log file `/opt/zimbra/zmstat/zmstat.out` full of messages like  `$line in pattern match (m//) at /opt/zimbra/libexec/zmstat-io line 87.`
+    ```
+    # 
+    sed -i s/Device\:/Device/g /opt/zimbra/libexec/zmstat-io
+    ```
+    
