@@ -1,6 +1,7 @@
 # How to migrate Zimbra OSE to new server
 Steps below was tested with Zimbra OSE 8.8.12GA on Ubuntu 18.04.
 ## Moving steps
+1. Set TTL value for Zimbra server name and MX servers of domains served by Zimbra as low as possible
 1. Install **new server** OS  the same version and patch level as on ***old server***
 1. Install **new server** Zimbra OSE exactly the same version as on ***old 
 server***
@@ -19,6 +20,51 @@ server***
     # Run command below as root on new server 
     rsync -e ssh -axvzKHS  old_server:/opt/zimbra /opt/
     ```
+1. Fix permissions on the **new server**
+    ```
+    # Run command below as root on new server 
+    /opt/zimbra/libexec/zmfixperms -e -v
+    ```
+1. As root rerun the installer without the -s option:
+    ```
+    ./install.sh 
+    ```
+    The installer will detect ZCS already installed, and will ask if you want to upgrade. Select Yes.
+1. Verify and redeploy SSL certificate and restart Zimbra
+    ```
+    # Run commands below as zimbra on new server 
+    zmcertmgr verifycrt comm
+    zmcertmgr deploycrt comm
+    zmcontrol restart
+    ```
+Check if moved Zimbra works as expected. Now you are ready to final move.
+1. Stop Zimbra on the ***old server***
+    ```
+    # Run as root on the old server
+    su - zimbra -c 'zmcontrol stop'
+    ```
+1. On the **new server**
+    ```
+    # Run command below as root on new server 
+    rsync -e ssh -axvzKHS  old_server:/opt/zimbra /opt/
+    /opt/zimbra/libexec/zmfixperms -e -v
+    ```
+1. If you've faced any errors while running `install.sh` on previous run you need to fix it now. (See [Possible problems](https://github.com/alexey-saveliev/zimbra-mirgation#possible-problems) section)
+1. As root rerun the installer without the -s option:
+    ```
+    ./install.sh 
+    ```
+    The installer will detect ZCS already installed, and will ask if you want to upgrade. Select Yes.
+1. Verify and redeploy SSL certificate and restart Zimbra
+    ```
+    # Run commands below as zimbra on new server 
+    zmcertmgr verifycrt comm
+    zmcertmgr deploycrt comm
+    zmcontrol restart
+    ```
+1. Check if moved Zimbra works as expected and set DNS records point to new server
+
+
  ## Possible problems
 - Got error messages while run `install.sh`
     1. _Error:_ **UUID.c**: loadable library and perl binaries are mismatched (got handshake key 0xdb00080, needed 0xde00080)
