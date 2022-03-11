@@ -1,13 +1,13 @@
 # How to migrate Zimbra OSE to new server
 Steps below was tested with Zimbra OSE 8.8.12GA on Ubuntu 18.04.
 ## Moving steps
-1. Install **new server** OS  the same version and pathc level as on ***old server***
+1. Install **new server** OS  the same version and patch level as on ***old server***
 1. Install **new server** Zimbra OSE exactly the same version as on ***old 
 server***
     ```
     # Run command below as root
     # It will install Zimbra OSE software only
-    # You'll must to choose same component set as on the old server
+    # You must choose same component set as on the old server
     ./install.sh -s
     ```
 1. On the **new server** move newly installed Zimbra to temp directory
