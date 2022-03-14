@@ -69,10 +69,12 @@ Check if moved Zimbra works as expected. Now you are ready to final move.
 
  ## Possible problems
 - Got error messages while run `install.sh`
-    1. _Error:_ **UUID.c**: loadable library and perl binaries are mismatched (got handshake key 0xdb00080, needed 0xde00080)
+    1. _Error:_ **Socket.c**: loadable library and perl binaries are mismatched (got handshake key 0xdb00080, needed 0xde00080)  
+        Run `apt install --reinstall zimbra-perl-socket` to solve.
+    1. _Error:_ **UUID.c**: loadable library and perl binaries are mismatched (got handshake key 0xdb00080, needed 0xde00080)  
         Run `apt install --reinstall zimbra-perl-data-uuid` to solve.
 
-    2. _Error:_ **Linux.c**: loadable library and perl binaries are mismatched (got handshake key 0xdb00080, needed 0xde00080)
+    2. _Error:_ **Linux.c**: loadable library and perl binaries are mismatched (got handshake key 0xdb00080, needed 0xde00080)  
         Run `apt install --reinstall zimbra-perl-socket-linux` to solve.
 - Log file `/opt/zimbra/zmstat/zmstat.out` full of messages like  `$line in pattern match (m//) at /opt/zimbra/libexec/zmstat-io line 87.`
     ```
